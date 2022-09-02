@@ -5,13 +5,14 @@
 #include <tqdm.h>
 #include <unistd.h>// sleep
 
+const unsigned int DEFAULT_ITER = 10000000;
 const char *PROG_NAME = "error_handling";
 
 struct prog_options
 {
 	int affinity = -1;// -1 for none; else [0 to <N_CORES-1>]
 	int priority = 0; // 0 for SCHED_OTHER; [1 to 99] for SCHED_FIFO
-	unsigned int num_iter = 100000; // number of iterations
+	unsigned int num_iter = DEFAULT_ITER; // number of iterations
 };
 
 bool
@@ -51,10 +52,11 @@ do_experiment(
 	print_separator("bool_fun()");
 	bar.reset();
 	errors = 0;
-	for (unsigned int i=0; i<opts.num_iter; i++) {
+	for (unsigned int i=0; i<opts.num_iter; i++)
+	{
 		bar.progress(i,opts.num_iter);
-		if (bool_fun(i)) {
-		} else {
+		if ( ! bool_fun(i))
+		{
 			errors++;
 		}
 	}
@@ -64,10 +66,11 @@ do_experiment(
 	print_separator("bool_fun() - no errors");
 	bar.reset();
 	errors = 0;
-	for (unsigned int i=0; i<opts.num_iter; i++) {
+	for (unsigned int i=0; i<opts.num_iter; i++)
+	{
 		bar.progress(i,opts.num_iter);
-		if (bool_fun(1)) {
-		} else {
+		if ( ! bool_fun(1))
+		{
 			errors++;
 		}
 	}
@@ -77,10 +80,11 @@ do_experiment(
 	print_separator("bool_fun() - all errors");
 	bar.reset();
 	errors = 0;
-	for (unsigned int i=0; i<opts.num_iter; i++) {
+	for (unsigned int i=0; i<opts.num_iter; i++)
+	{
 		bar.progress(i,opts.num_iter);
-		if (bool_fun(0)) {
-		} else {
+		if ( ! bool_fun(0))
+		{
 			errors++;
 		}
 	}
@@ -90,9 +94,11 @@ do_experiment(
 	print_separator("excp_fun()");
 	bar.reset();
 	errors = 0;
-	for (unsigned int i=0; i<opts.num_iter; i++) {
+	for (unsigned int i=0; i<opts.num_iter; i++)
+	{
 		bar.progress(i,opts.num_iter);
-		try {
+		try
+		{
 			excp_fun(i);
 		} catch (const std::exception &e) {
 			errors++;
@@ -104,9 +110,11 @@ do_experiment(
 	print_separator("excp_fun() - no errors");
 	bar.reset();
 	errors = 0;
-	for (unsigned int i=0; i<opts.num_iter; i++) {
+	for (unsigned int i=0; i<opts.num_iter; i++)
+	{
 		bar.progress(i,opts.num_iter);
-		try {
+		try
+		{
 			excp_fun(1);
 		} catch (const std::exception &e) {
 			errors++;
@@ -118,9 +126,11 @@ do_experiment(
 	print_separator("excp_fun() - all errors");
 	bar.reset();
 	errors = 0;
-	for (unsigned int i=0; i<opts.num_iter; i++) {
+	for (unsigned int i=0; i<opts.num_iter; i++)
+	{
 		bar.progress(i,opts.num_iter);
-		try {
+		try
+		{
 			excp_fun(0);
 		} catch (const std::exception &e) {
 			errors++;
@@ -137,7 +147,7 @@ display_usage()
 	printf(" -a,--affinity    : CPU affinity: -1 for none; else [0 to <N_CORES-1>]\n");
 	printf(" -p,--priority    : scheding priority: 0 for SCHED_OTHER; [1 to 99] for SCHED_FIFO\n");
 	printf("                    requires root permissions\n");
-	printf(" -n,--num-iter    : number of iterations (default 100000)\n");
+	printf(" -n,--num-iter    : number of iterations (default %d)\n",DEFAULT_ITER);
 	printf(" -h,--help        : display this menu\n");
 }
 
