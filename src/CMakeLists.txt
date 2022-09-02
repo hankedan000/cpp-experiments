@@ -1,2 +1,2 @@
-add_executable(application
-	application.cpp)
+add_subdirectory(application)
+add_subdirectory(error_handling)

@@ -1,0 +1,3 @@
+[submodule "extern/cpptqdm"]
+	path = extern/cpptqdm
+	url = https://github.com/aminnj/cpptqdm.git
