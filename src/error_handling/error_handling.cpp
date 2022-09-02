@@ -169,12 +169,15 @@ do_experiment1(
 #define OTHER   0
 #define MULT7   1
 #define MULT42  2
+#define MULT100 3
 
 int
 ret_fun2(int n)
 {
-	if (n % 42 == 0)
+	if (n % 100 == 0)
 	{
+		return MULT100;
+	} else if (n % 42 == 0) {
 		return MULT42;
 	} else if (n % 7 == 0) {
 		return MULT7;
@@ -185,12 +188,15 @@ ret_fun2(int n)
 // possible exceptions
 class Mult7Exception : public std::exception {};
 class Mult42Exception : public std::exception {};
+class Mult100Exception : public std::exception {};
 
 void
 exc_fun2(int n)
 {
-	if (n % 42 == 0)
+	if (n % 100 == 0)
 	{
+		throw Mult100Exception();
+	} else if (n % 42 == 0) {
 		throw Mult42Exception();
 	} else if (n % 7 == 0) {
 		throw Mult7Exception();
@@ -205,10 +211,11 @@ do_experiment2(
 	tqdm bar;
 	unsigned int mult7 = 0;
 	unsigned int mult42 = 0;
+	unsigned int mult100 = 0;
 
 	print_s_separator("return code - switch case");
 	bar.reset();
-	mult7 = 0; mult42 = 0;
+	mult7 = 0; mult42 = 0; mult100 = 0;
 	for (unsigned int i=0; i<opts.num_iter; i++)
 	{
 		bar.progress(i,opts.num_iter);
@@ -220,15 +227,17 @@ do_experiment2(
 			case MULT42:
 				mult42++;
 				break;
+			case MULT100:
+				mult100++;
+				break;
 		}
 	}
 	bar.finish();
-	printf("mult7 = %d\n", mult7);
-	printf("mult42 = %d\n", mult42);
+	printf("mult7 = %d; mult42 = %d; mult100 = %d\n", mult7, mult42, mult100);
 
 	print_s_separator("return code - if else");
 	bar.reset();
-	mult7 = 0; mult42 = 0;
+	mult7 = 0; mult42 = 0; mult100 = 0;
 	for (unsigned int i=0; i<opts.num_iter; i++)
 	{
 		bar.progress(i,opts.num_iter);
@@ -238,15 +247,16 @@ do_experiment2(
 			mult7++;
 		} else if (ret == MULT42) {
 			mult42++;
+		} else if (ret == MULT100) {
+			mult100++;
 		}
 	}
 	bar.finish();
-	printf("mult7 = %d\n", mult7);
-	printf("mult42 = %d\n", mult42);
+	printf("mult7 = %d; mult42 = %d; mult100 = %d\n", mult7, mult42, mult100);
 
 	print_s_separator("exception");
 	bar.reset();
-	mult7 = 0; mult42 = 0;
+	mult7 = 0; mult42 = 0; mult100 = 0;
 	for (unsigned int i=0; i<opts.num_iter; i++)
 	{
 		bar.progress(i,opts.num_iter);
@@ -257,16 +267,18 @@ do_experiment2(
 			mult7++;
 		} catch (const Mult42Exception &e) {
 			mult42++;
+		} catch (const Mult100Exception &e) {
+			mult100++;
 		}
 	}
 	bar.finish();
-	printf("mult7 = %d\n", mult7);
-	printf("mult42 = %d\n", mult42);
+	printf("mult7 = %d; mult42 = %d; mult100 = %d\n", mult7, mult42, mult100);
 }
 
-#define OTHER  0
+#define OTHER    0
 #define EQUAL7   1
 #define EQUAL42  2
+#define EQUAL100 3
 
 int
 ret_fun3(int n)
@@ -276,6 +288,8 @@ ret_fun3(int n)
 		return EQUAL7;
 	} else if (n == 42) {
 		return EQUAL42;
+	} else if (n == 100) {
+		return EQUAL100;
 	}
 	return OTHER;
 }
@@ -283,6 +297,7 @@ ret_fun3(int n)
 // possible exceptions
 class Equal7Exception : public std::exception {};
 class Equal42Exception : public std::exception {};
+class Equal100Exception : public std::exception {};
 
 void
 exc_fun3(int n)
@@ -292,6 +307,8 @@ exc_fun3(int n)
 		throw Equal7Exception();
 	} else if (n == 42) {
 		throw Equal42Exception();
+	} else if (n == 100) {
+		throw Equal100Exception();
 	}
 }
 
@@ -303,10 +320,11 @@ do_experiment3(
 	tqdm bar;
 	unsigned int equal7 = 0;
 	unsigned int equal42 = 0;
+	unsigned int equal100 = 0;
 
 	print_s_separator("return code - switch case");
 	bar.reset();
-	equal7 = 0; equal42 = 0;
+	equal7 = 0; equal42 = 0; equal100 = 0;
 	for (unsigned int i=0; i<opts.num_iter; i++)
 	{
 		bar.progress(i,opts.num_iter);
@@ -318,15 +336,17 @@ do_experiment3(
 			case EQUAL42:
 				equal42++;
 				break;
+			case EQUAL100:
+				equal100++;
+				break;
 		}
 	}
 	bar.finish();
-	printf("equal7 = %d\n", equal7);
-	printf("equal42 = %d\n", equal42);
+	printf("equal7 = %d; equal42 = %d; equal100 = %d\n", equal7, equal42, equal100);
 
 	print_s_separator("return code - if else");
 	bar.reset();
-	equal7 = 0; equal42 = 0;
+	equal7 = 0; equal42 = 0; equal100 = 0;
 	for (unsigned int i=0; i<opts.num_iter; i++)
 	{
 		bar.progress(i,opts.num_iter);
@@ -336,15 +356,16 @@ do_experiment3(
 			equal7++;
 		} else if (ret == EQUAL42) {
 			equal42++;
+		} else if (ret == EQUAL100) {
+			equal100++;
 		}
 	}
 	bar.finish();
-	printf("equal7 = %d\n", equal7);
-	printf("equal42 = %d\n", equal42);
+	printf("equal7 = %d; equal42 = %d; equal100 = %d\n", equal7, equal42, equal100);
 
 	print_s_separator("exception");
 	bar.reset();
-	equal7 = 0; equal42 = 0;
+	equal7 = 0; equal42 = 0; equal100 = 0;
 	for (unsigned int i=0; i<opts.num_iter; i++)
 	{
 		bar.progress(i,opts.num_iter);
@@ -355,11 +376,12 @@ do_experiment3(
 			equal7++;
 		} catch (const Equal42Exception &e) {
 			equal42++;
+		} catch (const Equal100Exception &e) {
+			equal100++;
 		}
 	}
 	bar.finish();
-	printf("equal7 = %d\n", equal7);
-	printf("equal42 = %d\n", equal42);
+	printf("equal7 = %d; equal42 = %d; equal100 = %d\n", equal7, equal42, equal100);
 }
 
 void
