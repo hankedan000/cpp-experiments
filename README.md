@@ -1,5 +1,5 @@
-# cmakeexe-template
-Template repo for making C++ applications with a CMake build system.
+# cpp-experiments
+Repository where I experiment with C/C++ concepts
 
 # Building
 ```bash
