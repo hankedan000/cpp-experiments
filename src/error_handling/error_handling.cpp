@@ -107,7 +107,7 @@ do_experiment(
 	bar.finish();
 	printf("errors = %d\n", errors);
 
-	print_separator("excp_fun() - no errors");
+	print_separator("excp_fun() - no errors (try-catch inside loop)");
 	bar.reset();
 	errors = 0;
 	for (unsigned int i=0; i<opts.num_iter; i++)
@@ -119,6 +119,22 @@ do_experiment(
 		} catch (const std::exception &e) {
 			errors++;
 		}
+	}
+	bar.finish();
+	printf("errors = %d\n", errors);
+
+	print_separator("excp_fun() - no errors (try-catch outside loop)");
+	bar.reset();
+	errors = 0;
+	try
+	{
+		for (unsigned int i=0; i<opts.num_iter; i++)
+		{
+			bar.progress(i,opts.num_iter);
+			excp_fun(1);
+		}
+	} catch (const std::exception &e) {
+		errors++;
 	}
 	bar.finish();
 	printf("errors = %d\n", errors);
