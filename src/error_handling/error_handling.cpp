@@ -30,7 +30,7 @@ excp_fun(int n)
 {
 	if (n % 7 == 0)
 	{
-		throw std::runtime_error("");
+		throw std::exception();
 	}
 }
 
