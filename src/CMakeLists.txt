@@ -1,2 +1,4 @@
 add_subdirectory(application)
 add_subdirectory(error_handling)
+add_subdirectory(http_server)
+add_subdirectory(std_ref)
